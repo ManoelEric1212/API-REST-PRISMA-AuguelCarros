@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id           String         @id @default(uuid())
+  nome         String
+  email        String         @unique
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  aluguelCarro aluguelCarro[] @relation("usuario")
+
+  @@map("usuarios")
+}
+
+model Carro {
+  id             String         @id @default(uuid())
+  modelo         String
+  marca          String
+  ano_fabricacao String
+  aluguelCarro   aluguelCarro[] @relation("carro")
+
+  @@map("carros")
+}
+
+model aluguelCarro {
+  usuario   Usuario @relation("usuario", fields: [usuarioId], references: [id])
+  usuarioId String
+  carro     Carro   @relation("carro", fields: [carroId], references: [id], onDelete: Cascade)
+  carroId   String
+
+  @@id([usuarioId, carroId])
+  @@map("alugueis")
+}
