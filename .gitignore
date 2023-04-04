@@ -1,4 +1,9 @@
 node_modules
+<<<<<<< HEAD
 .vscode
 # Keep environment variables out of version control
 .env
+=======
+# Keep environment variables out of version control
+.env
+>>>>>>> developer
